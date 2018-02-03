@@ -7,6 +7,7 @@ from rango.forms import UserForm, UserProfileForm
 #Import the Category and Page model
 from rango.models import Category
 from rango.models import Page
+from rango.models import User
 
 from django.contrib.auth import authenticate, login
 

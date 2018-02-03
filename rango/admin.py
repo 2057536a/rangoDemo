@@ -1,5 +1,7 @@
 from django.contrib import admin
-from rango.models import Category, Page, UserProfile
+from rango.models import Category, Page
+from rango.models import UserProfile
+from rango.models import User
 
 # Add in this class to customise the Admin Interface
 class CategoryAdmin(admin.ModelAdmin):
