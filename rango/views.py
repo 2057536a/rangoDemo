@@ -22,12 +22,6 @@ from django.contrib.auth import logout
 def index(request):
 	request.session.set_test_cookie()
 
-	# Query the database for a list of ALL categories currently stored.
-	# Order the categories by no. likes in descending order.
-	# Retrieve the top5 only - or all if less than 5.
-	# Place the list in our context_dict dictionary
-	# that will be passed to the template engine.
-
 	category_list = Category.objects.order_by('-likes')[:5]
 	page_list = Page.objects.order_by('-views')[:5]
 	context_dict = {'categories':category_list,'pages':page_list}
@@ -46,14 +40,24 @@ def index(request):
 
 
 def about(request):
+	request.session.set_test_cookie()
+
 	if request.session.test_cookie_worked():
 		print("TEST COOKIE WORKED!")
 		request.session.delete_test_cookie()
 
 
 	context_dict = {'boldmessage': "Crunchy, creamy, cookie, candy, cupcake!"}
+	# Call the helper function to handle the cookies
+	visitor_cookie_handler(request)
+
+	context_dict['visits'] = request.session['visits']
+
+	# Obtain our response obj early so we can add cookie info.
+	response = render(request, 'rango/about.html', context_dict)
     
-	return render(request, "rango/about.html", context=context_dict)
+    # Return response back to the user, updating any cookies that need changed.
+	return response
 
 
 def show_category(request, category_name_slug):
